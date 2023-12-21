@@ -1,46 +1,41 @@
-def scanNumber(i, j):
-    if i > len(board) or j > len(board[0]) or i < 0 or j < 0 or (i, j) in seenAlready: return 0
-    if not board[i][j].isnumeric(): return 0
-    digits = board[i][j]
-    seenAlready.append((i, j))
-    # scan left
-    lj = j - 1
-    while lj >= 0:
-        if not board[i][lj].isnumeric(): break
-        digits = board[i][lj] + digits
-        seenAlready.append((i, lj))
-        lj -= 1
-    # scan right
-    rj = j + 1
-    while rj < len(board[0]):
-        if not board[i][rj].isnumeric(): break
-        digits = digits + board[i][rj]
-        seenAlready.append((i, rj))
-        rj += 1
-    # print(digits)
+import re
+import math
 
-    return int(digits)
+f = open("day4", "r")
 
-
-def getAdjacentNumbers(i, j):
-    nw = scanNumber(i - 1, j - 1)
-    n = scanNumber(i - 1, j)
-    ne = scanNumber(i - 1, j + 1)
-    w = scanNumber(i, j - 1)
-    e = scanNumber(i, j + 1)
-    sw = scanNumber(i + 1, j - 1)
-    s = scanNumber(i + 1, j)
-    se = scanNumber(i + 1, j + 1)
-    return nw + n + ne + w + e + sw + s + se
-
-
-board = []
-seenAlready = []
+lines = f.read().splitlines()
+winningNums = []
+cardNums = []
 total = 0
-with open("day3", 'r') as f: board = [[c for c in line.rstrip()] for line in f]
-for i, line in enumerate(board):
-    for j, c in enumerate(line):
-        if not c.isnumeric() and c != '.':
-            # symbol hit
-            total += getAdjacentNumbers(i, j)
-print(total)
+
+def GetMatches(wNums, cNums):
+    matches = 0
+    for x in cNums:
+        if x in wNums:
+            matches += 1
+    return matches
+
+
+for x in lines:
+    y = re.sub(r'Card[\s]+[\d]+: ',"",x).split(" | ")
+    #print(list(map(int,re.findall(r'[\d]+',y[0]))))
+    #print(re.findall(r'[\d]+',y[1]))
+    winningNums.append(list(map(int,re.findall(r'[\d]+',y[0]))))
+    cardNums.append(list(map(int,re.findall(r'[\d]+',y[1]))))
+
+matchNum = []
+copyNum = [1] * len(winningNums)
+
+for i,x in enumerate(cardNums):
+    matchNum.append(GetMatches(winningNums[i],x))
+
+for i, x in enumerate(matchNum):
+    for k in range (0, copyNum[i]):
+        for j in range(i,x+i):
+            copyNum[j+1] += 1
+
+print(sum(copyNum))
+
+print(matchNum)
+print(copyNum)
+#print(cardNums)

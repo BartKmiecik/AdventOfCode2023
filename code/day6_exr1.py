@@ -1,7 +1,7 @@
 import re
 
 patern = f'([0-9]+)'
-data = open('day6', 'r')
+data = open('../text/day6', 'r')
 
 times = re.findall(patern, data.readline())
 records = re.findall(patern, data.readline())

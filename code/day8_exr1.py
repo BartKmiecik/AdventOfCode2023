@@ -1,7 +1,7 @@
 import re
 
 pattern = f'([a-zA-Z]+)'
-data = open('day8', 'r')
+data = open('../text/day8', 'r')
 
 instructions = data.readline().strip()
 next = data.readline()

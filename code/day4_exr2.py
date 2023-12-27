@@ -1,6 +1,6 @@
 import re
 
-data = open('day4', 'r')
+data = open('../text/day4', 'r')
 result = 0
 pattern = f'([0-9]+)'
 line = data.readline()

@@ -1,6 +1,6 @@
 import re
 
-data = open('day3', 'r')
+data = open('../text/day3', 'r')
 num_pattern = "([0-9]+)"
 result = 0
 
